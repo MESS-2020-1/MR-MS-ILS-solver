@@ -20,6 +20,6 @@ You should download and build it before compiling the solver (see instructions o
 
 For example, the command line:
 
-`mrils ../Instances/Public/wlp18.dzn sol18.txt 200 0`
+`./mrils ../Instances/Public/wlp18.dzn sol18.txt 200 0`
 
 Runs for 200s the solver on instance `wlp18.dzn` stored in the directory `../Instances/Public/` and delivers the solution in the file `sol18.txt`.
