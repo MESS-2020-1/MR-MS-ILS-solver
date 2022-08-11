@@ -1,4 +1,4 @@
-# MineReduce-based Multi-Start Iterated Local Search (MR-MS-ILS)
+# MineReduce-based Multi-Start ILS (MR-MS-ILS)
 This repository stores the source code of the MineReduce-based Multi-Start Iterated Local Search solver used for the [MESS-2020+1 competition](https://www.ants-lab.it/mess2020/#competition).
 
 ## Dependencies
