@@ -5,11 +5,11 @@ This repository stores the source code of the MineReduce-based Multi-Start Itera
 
 This solver uses [FPmax* LIB](https://github.com/marcelorhmaia/FPmax-LIB).
 
-You should download and build it prior to compiling the solver (see instructions on the link above).
+You should download and build it before compiling the solver (see instructions on the link above).
 
 ## Compiling the solver
 
-1. Create a directory named "include":<br>`mkdir include`
+1. Create a directory named "include" in this project's base directory:<br>`mkdir include`
 2. Copy the required FPmax* LIB header files into `include`.
 3. Copy the FPmax* LIB shared library (.so on Linux or .dll on Windows) into this project's base directory.
 4. Compile the solver with `make`.
