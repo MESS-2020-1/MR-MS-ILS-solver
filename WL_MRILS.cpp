@@ -26,7 +26,7 @@ struct WarehouseComparator
 // Comparator for ordering solutions by cost
 bool CompareSolutions(WL_Solution sol1, WL_Solution sol2)
 {
-	return sol1.Cost() < sol2.Cost();
+	return sol1.Cost() < sol2.Cost() - MY_EPSILON;
 }
 
 // Move structure
@@ -128,7 +128,7 @@ void WL_MRILS::Run()
 			if (elite.size() > elite_max_size)
 			{
 				set<WL_Solution>::iterator it = --elite.end();
-				if (it->Cost() > sol->Cost())
+				if (it->Cost() - MY_EPSILON > sol->Cost())
 				{
 					nu_iter = 0;
 					elite_updated = true;
@@ -142,7 +142,7 @@ void WL_MRILS::Run()
 			}
 		}
 		
-		if (best == NULL || sol->Cost() < best->Cost())
+		if (best == NULL || sol->Cost() < best->Cost() - MY_EPSILON)
 		{
 			time_best = (double)clock()/CLOCKS_PER_SEC;
 			
@@ -406,7 +406,7 @@ void WL_MRILS::LocalSearch(WL_Solution* sol)
 								if (q == sol->Load(w1))
 									improvement += in.FixedCost(w1);
 								
-								if (improvement > 0)
+								if (improvement > MY_EPSILON)
 									moves.push({s1, in.Stores(), w1, w2, improvement});
 							}
 							
@@ -422,7 +422,7 @@ void WL_MRILS::LocalSearch(WL_Solution* sol)
 										double improvement = (in.SupplyCost(s1, w1) - in.SupplyCost(s1, w2)) * sol->Supply(s1, w1)
 														+ (in.SupplyCost(s2, w2) - in.SupplyCost(s2, w1)) * sol->Supply(s2, w2);
 										
-										if (improvement > 0)
+										if (improvement > MY_EPSILON)
 											moves.push({s1, s2, w1, w2, improvement});
 									}
 								}
@@ -451,7 +451,7 @@ void WL_MRILS::LocalSearch(WL_Solution* sol)
 								if (q == sol->Load(w1))
 									improvement += in.FixedCost(w1);
 								
-								if (improvement > 0)
+								if (improvement > MY_EPSILON)
 									moves.push({s1, in.Stores(), w1, w2, improvement});
 							}
 							
@@ -467,7 +467,7 @@ void WL_MRILS::LocalSearch(WL_Solution* sol)
 										double improvement = (in.SupplyCost(s1, w1) - in.SupplyCost(s1, w2)) * sol->Supply(s1, w1)
 														+ (in.SupplyCost(s2, w2) - in.SupplyCost(s2, w1)) * sol->Supply(s2, w2);
 										
-										if (improvement > 0)
+										if (improvement > MY_EPSILON)
 											moves.push({s1, s2, w1, w2, improvement});
 									}
 								}
@@ -535,7 +535,7 @@ WL_Solution* WL_MRILS::IteratedLocalSearch(WL_Solution* sol)
 	{
 		if (i > 0)
 		{
-			if (sol->Cost() < ils_accept * best_sol->Cost())
+			if (sol->Cost() + MY_EPSILON < ils_accept * best_sol->Cost())
 			{
 				if (working_sol)
 					delete working_sol;
@@ -580,7 +580,7 @@ WL_Solution* WL_MRILS::IteratedLocalSearch(WL_Solution* sol)
 									if (q == sol->Load(w1) && closing_forbidden.find(w1) == closing_forbidden.end())
 										improvement += in.FixedCost(w1);
 									
-									if (improvement > 0)
+									if (improvement > MY_EPSILON)
 										moves.push({s1, in.Stores(), w1, w2, improvement});
 								}
 								
@@ -596,7 +596,7 @@ WL_Solution* WL_MRILS::IteratedLocalSearch(WL_Solution* sol)
 											double improvement = (in.SupplyCost(s1, w1) - in.SupplyCost(s1, w2)) * sol->Supply(s1, w1)
 															+ (in.SupplyCost(s2, w2) - in.SupplyCost(s2, w1)) * sol->Supply(s2, w2);
 											
-											if (improvement > 0)
+											if (improvement > MY_EPSILON)
 												moves.push({s1, s2, w1, w2, improvement});
 										}
 									}
@@ -625,7 +625,7 @@ WL_Solution* WL_MRILS::IteratedLocalSearch(WL_Solution* sol)
 									if (q == sol->Load(w1) && closing_forbidden.find(w1) == closing_forbidden.end())
 										improvement += in.FixedCost(w1);
 									
-									if (improvement > 0)
+									if (improvement > MY_EPSILON)
 										moves.push({s1, in.Stores(), w1, w2, improvement});
 								}
 								
@@ -641,7 +641,7 @@ WL_Solution* WL_MRILS::IteratedLocalSearch(WL_Solution* sol)
 											double improvement = (in.SupplyCost(s1, w1) - in.SupplyCost(s1, w2)) * sol->Supply(s1, w1)
 															+ (in.SupplyCost(s2, w2) - in.SupplyCost(s2, w1)) * sol->Supply(s2, w2);
 											
-											if (improvement > 0)
+											if (improvement > MY_EPSILON)
 												moves.push({s1, s2, w1, w2, improvement});
 										}
 									}
@@ -684,7 +684,7 @@ WL_Solution* WL_MRILS::IteratedLocalSearch(WL_Solution* sol)
 				invalid_warehouses.insert(move.w2);
 			}
 			
-			if (sol->Cost() < best_sol->Cost())
+			if (sol->Cost() < best_sol->Cost() - MY_EPSILON)
 			{
 				delete best_sol;
 				best_sol = sol->Copy();
@@ -940,7 +940,7 @@ void WL_MRILS::MineElite()
 					transaction.insert(index);
 					min_supply[s][w] = min(min_supply[s][w], sol.Supply(s, w));
 				}
-			dataset->insert(transaction);
+			dataset->push_back(transaction);
 		}
 		
 		FISet* frequentItemsets = fpmax(dataset, m_sup, n_patterns);

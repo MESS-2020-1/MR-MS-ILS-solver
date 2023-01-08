@@ -8,6 +8,8 @@
 #include "WL_Instance.h"
 #include "WL_Solution.h"
 
+#define MY_EPSILON 0.00001 // Precision parameter, used to avoid numerical instabilities
+
 // MineReduce-based Multi-Start ILS solver for the WLP
 class WL_MRILS
 {
