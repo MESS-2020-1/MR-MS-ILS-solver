@@ -964,6 +964,7 @@ void WL_MRILS::MineElite()
 			patterns.push_back(pattern);
 		}
 		
+		delete dataset;
 		delete frequentItemsets;
 	}
 }
